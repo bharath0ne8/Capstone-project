@@ -2,7 +2,7 @@
 
 # Build the Docker image
 echo "Building Docker image..."
-docker build -t my_react_app .
+docker-compose build
 
 # Run the Docker container using Docker Compose
 echo "Starting the Docker container..."
