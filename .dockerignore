@@ -1,5 +1,9 @@
+#During the build process,don't need to copy the local node_modules.
 node_modules
-build
+#Files that may exist in your project directory.
+npm-debug.log
+#File itself from being copied into the Docker image.
 .dockerignore
-Dockerfile
-Dockerfile.prod
+.DS_Store
+#Excludes the build.sh script as it is only required for local use, not for the Docker image.
+build.sh

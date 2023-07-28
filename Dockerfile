@@ -13,10 +13,14 @@ RUN npm install --silent
 RUN npm install react-scripts@3.4.1 -g --silent
 
 # Copy the application files to the container
-COPY . /app
+COPY . .
 
-# Expose port 80 to run the application
-EXPOSE 80
+# Build the production version of the React application
+RUN npm run build
 
-# Define the command to start the application on port 80
-CMD ["npm", "start", "--", "--port", "80"]
+# Use a lightweight HtP server to serve the production build
+# Install serve globally
+RUN npm install -g serve
+
+# Set the command to run the HTTP server to serve the production build
+CMD ["serve", "-s", "build", "-l", "80"]
