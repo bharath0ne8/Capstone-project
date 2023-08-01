@@ -10,7 +10,7 @@ pipeline {
             steps {
                 script {
                     def dockerUsername = 'bharathsrinivasan'
-                    def dockerPassword = credentials('DOCKERHUB_CREDENTIALS')
+                    def dockerPassword = 'dckr_pat_wT2df4Kw2z-5bLCvtcHYOcENHHo'
 
                     if (env.GIT_BRANCH == 'dev' || env.GIT_BRANCH == 'main') {
                         withCredentials([usernamePassword(credentialsId: dockerPassword, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
