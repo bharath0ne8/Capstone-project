@@ -3,23 +3,17 @@ pipeline {
 
     environment {
         GIT_BRANCH = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
-        DOCKER_USERNAME = bharathsrinivasan
-        DOCKER_PASSWORD = dckr_pat_wT2df4Kw2z-5bLCvtcHYOcENHHo
     }
 
     stages {
         stage('Build and Deploy') {
             steps {
                 script {
-                    if (env.GIT_BRANCH == 'dev') {
-                        withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            sh '''
-                                chmod +x deploy.sh
-                                ./deploy.sh
-                            '''
-                        }
-                    } else if (env.GIT_BRANCH == 'main') {
-                        withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    def dockerUsername = 'bharathsrinivasan'
+                    def dockerPassword = credentials('DOCKERHUB_CREDENTIALS')
+
+                    if (env.GIT_BRANCH == 'dev' || env.GIT_BRANCH == 'main') {
+                        withCredentials([usernamePassword(credentialsId: dockerPassword, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                             sh '''
                                 chmod +x deploy.sh
                                 ./deploy.sh
@@ -33,4 +27,3 @@ pipeline {
         }
     }
 }
-
