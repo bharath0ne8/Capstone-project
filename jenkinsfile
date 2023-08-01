@@ -12,15 +12,19 @@ pipeline {
             steps {
                 script {
                     if (env.GIT_BRANCH == 'dev') {
-                        sh '''
-                            chmod +x deploy.sh
-                            ./deploy.sh
-                        '''
+                        withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                            sh '''
+                                chmod +x deploy.sh
+                                ./deploy.sh
+                            '''
+                        }
                     } else if (env.GIT_BRANCH == 'main') {
-                        sh '''
-                            chmod +x deploy.sh
-                            ./deploy.sh
-                        '''
+                        withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                            sh '''
+                                chmod +x deploy.sh
+                                ./deploy.sh
+                            '''
+                        }
                     } else {
                         echo 'Deployment is failure'
                     }
