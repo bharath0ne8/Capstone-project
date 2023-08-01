@@ -20,15 +20,3 @@ else
     echo "Deployment is failure"
 fi
 
- # Make the shell script executable
-  chmod +x build.sh
-
-  # Build and run the Docker containers using Docker Compose
-  ./build.sh
-
-  # Optional: Stop and remove any previously running containers to clean up
-  docker-compose down
-
-  # Start the Docker containers in the background
-  docker-compose up -d
-EOF
