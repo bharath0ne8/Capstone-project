@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+
+    environment {
+        GIT_BRANCH = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+        DOCKER_USERNAME = bharathsrinivasan
+        DOCKER_PASSWORD = dckr_pat_wT2df4Kw2z-5bLCvtcHYOcENHHo
+    }
+
+    stages {
+        stage('Build and Deploy') {
+            steps {
+                script {
+                    if (env.GIT_BRANCH == 'dev') {
+                        sh '''
+                            chmod +x deploy.sh
+                            ./deploy.sh
+                        '''
+                    } else if (env.GIT_BRANCH == 'master') {
+                        sh '''
+                            chmod +x deploy.sh
+                            ./deploy.sh
+                        '''
+                    } else {
+                        echo 'Deployment is failure'
+                    }
+                }
+            }
+        }
+    }
+}
+
