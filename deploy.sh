@@ -23,7 +23,7 @@ fi
  # Make the shell script executable
   chmod +x build.sh
 
-  # Build and run the Docker containers using Docker Compose
+  # Build and run the Docker containers using Docker Compose.
   ./build.sh
 
   # Optional: Stop and remove any previously running containers to clean up
