@@ -3,24 +3,22 @@ pipeline {
 
     environment {
         GIT_BRANCH = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
-        DOCKER_USERNAME = bharathsrinivasan
-        DOCKER_PASSWORD = dckr_pat_wT2df4Kw2z-5bLCvtcHYOcENHHo
     }
 
     stages {
         stage('Build and Deploy') {
             steps {
                 script {
-                    if (env.GIT_BRANCH == 'dev') {
-                        sh '''
-                            chmod +x deploy.sh
-                            ./deploy.sh
-                        '''
-                    } else if (env.GIT_BRANCH == 'main') {
-                        sh '''
-                            chmod +x deploy.sh
-                            ./deploy.sh
-                        '''
+                    def dockerUsername = 'bharathsrinivasan'
+                    def dockerPassword = 'dckr_pat_wT2df4Kw2z-5bLCvtcHYOcENHHo'
+
+                    if (env.GIT_BRANCH == 'dev' || env.GIT_BRANCH == 'main') {
+                        withCredentials([usernamePassword(credentialsId: dockerPassword, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                            sh '''
+                                chmod +x deploy.sh
+                                ./deploy.sh
+                            '''
+                        }
                     } else {
                         echo 'Deployment is failure'
                     }
@@ -29,4 +27,4 @@ pipeline {
         }
     }
 }
-
+}
