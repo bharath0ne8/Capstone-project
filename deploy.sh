@@ -1,7 +1,5 @@
 #!/bin/bash
 
-docker_username: 'bharathsrinivasan'
-docker_password: 'dckr_pat_wT2df4Kw2z-5bLCvtcHYOcENHHo'
 
 if [[ $GIT_BRANCH == dev ]]; then
     chmod +x build.sh

@@ -3,48 +3,29 @@ pipeline {
 
     environment {
         GIT_BRANCH = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+        docker_username = bharathsrinivasan
+        docker_password = dckr_pat_wT2df4Kw2z-5bLCvtcHYOcENHHo
     }
 
     stages {
-        stage('Build') {
+        stage('Build and Deploy') {
             steps {
                 script {
-                    def dockerUsername = 'DockerHub'
-                    def dockerPasswordCredential = 'DockerHub' // Update this with the correct Jenkins credential ID for Docker Hub ipassword
-
-                    if (env.GIT_BRANCH == 'dev' || env.GIT_BRANCH == 'main') {
-                        withCredentials([usernamePassword(credentialsId: dockerPasswordCredential, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            sh '''
-                                chmod +x build.sh
-                                ./build.sh
-                            '''
-                        }
+                    if (env.GIT_BRANCH == 'dev') {
+                        sh '''
+                            chmod +x deploy.sh
+                            ./deploy.sh
+                        '''
+                    } else if (env.GIT_BRANCH == 'main') {
+                        sh '''
+                            chmod +x deploy.sh
+                            ./deploy.sh
+                        '''
                     } else {
-                        echo 'Build is skipped for this branch.'
-                    }
-                }
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                script {
-                    def dockerUsername = 'DockerHub'
-                    def dockerPasswordCredential = 'DockerHub' // Update this with the correct Jenkins credential ID for Docker Hub password
-
-                    if (env.GIT_BRANCH == 'dev' || env.GIT_BRANCH == 'main') {
-                        withCredentials([usernamePassword(credentialsId: dockerPasswordCredential, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            sh '''
-                                chmod +x deploy.sh
-                                ./deploy.sh
-                            '''
-                        }
-                    } else {
-                        echo 'Deployment is skipped for this branch.'
+                        echo 'Deployment is failure'
                     }
                 }
             }
         }
     }
 }
-
