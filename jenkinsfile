@@ -9,8 +9,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    def dockerUsername = 'bharathsrinivasan'
-                    def dockerPasswordCredential = 'dckr_pat_wT2df4Kw2z-5bLCvtcHYOcENHHo' // Update this with the correct Jenkins credential ID for Docker Hub ipassword
+                    def dockerUsername = 'DockerHub'
+                    def dockerPasswordCredential = 'DockerHub' // Update this with the correct Jenkins credential ID for Docker Hub ipassword
 
                     if (env.GIT_BRANCH == 'dev' || env.GIT_BRANCH == 'main') {
                         withCredentials([usernamePassword(credentialsId: dockerPasswordCredential, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
@@ -29,8 +29,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    def dockerUsername = 'bharathsrinivasan'
-                    def dockerPasswordCredential = 'dckr_pat_wT2df4Kw2z-5bLCvtcHYOcENHHo' // Update this with the correct Jenkins credential ID for Docker Hub password
+                    def dockerUsername = 'DockerHub'
+                    def dockerPasswordCredential = 'DockerHub' // Update this with the correct Jenkins credential ID for Docker Hub password
 
                     if (env.GIT_BRANCH == 'dev' || env.GIT_BRANCH == 'main') {
                         withCredentials([usernamePassword(credentialsId: dockerPasswordCredential, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
