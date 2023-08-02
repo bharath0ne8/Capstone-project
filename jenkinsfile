@@ -7,12 +7,6 @@ pipeline {
 
     stages {
         stage('Build') {
-            when {
-                anyOf {
-                    branch 'origin/dev'
-                    branch 'origin/main'
-                }
-            }
             steps {
                 script {
                     def dockerUsername = 'bharathsrinivasan'
@@ -33,12 +27,6 @@ pipeline {
         }
 
         stage('Deploy') {
-            when {
-                anyOf {
-                    branch 'origin/dev'
-                    branch 'origin/main'
-                }
-            }
             steps {
                 script {
                     def dockerUsername = 'bharathsrinivasan'
