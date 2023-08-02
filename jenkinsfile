@@ -9,8 +9,8 @@ pipeline {
         stage('Build') {
             when {
                 anyOf {
-                    branch 'dev'
-                    branch 'main'
+                    branch 'origin/dev'
+                    branch 'origin/main'
                 }
             }
             steps {
@@ -35,8 +35,8 @@ pipeline {
         stage('Deploy') {
             when {
                 anyOf {
-                    branch 'dev'
-                    branch 'main'
+                    branch 'origin/dev'
+                    branch 'origin/main'
                 }
             }
             steps {
