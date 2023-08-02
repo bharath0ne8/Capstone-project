@@ -6,24 +6,57 @@ pipeline {
     }
 
     stages {
-        stage('Build and Deploy') {
+        stage('Build') {
+            when {
+                anyOf {
+                    branch 'dev'
+                    branch 'main'
+                }
+            }
             steps {
                 script {
                     def dockerUsername = 'bharathsrinivasan'
-                    def dockerPassword = 'dckr_pat_wT2df4Kw2z-5bLCvtcHYOcENHHo'
+                    def dockerPasswordCredential = 'DockerHub' // Update this with the correct Jenkins credential ID for Docker Hub ipassword
 
                     if (env.GIT_BRANCH == 'dev' || env.GIT_BRANCH == 'main') {
-                        withCredentials([usernamePassword(credentialsId: dockerPassword, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        withCredentials([usernamePassword(credentialsId: dockerPasswordCredential, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                            sh '''
+                                chmod +x build.sh
+                                ./build.sh
+                            '''
+                        }
+                    } else {
+                        echo 'Build is skipped for this branch.'
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            when {
+                anyOf {
+                    branch 'dev'
+                    branch 'main'
+                }
+            }
+            steps {
+                script {
+                    def dockerUsername = 'bharathsrinivasan'
+                    def dockerPasswordCredential = 'DockerHub' // Update this with the correct Jenkins credential ID for Docker Hub password
+
+                    if (env.GIT_BRANCH == 'dev' || env.GIT_BRANCH == 'main') {
+                        withCredentials([usernamePassword(credentialsId: dockerPasswordCredential, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                             sh '''
                                 chmod +x deploy.sh
                                 ./deploy.sh
                             '''
                         }
                     } else {
-                        echo 'Deployment is failure'
+                        echo 'Deployment is skipped for this branch.'
                     }
                 }
             }
         }
     }
 }
+
