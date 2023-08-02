@@ -13,4 +13,3 @@ sleep 5
 
 # Check the container logs for any errors
 docker logs my-react-app-container
-
